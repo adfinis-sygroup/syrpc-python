@@ -1,0 +1,8 @@
+virtualenv
+mock
+nose
+siphashc3
+kombu
+coverage
+pylint
+pep8
