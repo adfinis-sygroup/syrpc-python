@@ -7,8 +7,8 @@ import amqp.exceptions           as aexcept
 import kombu
 
 # Project imports
-import symonitoring_rpc.rpc_base as base
-import symonitoring_rpc.common   as cmn
+import syrpc.rpc_base as base
+import syrpc.common   as cmn
 
 
 class EmptyException(Exception):

@@ -6,8 +6,8 @@
 import kombu
 
 # Project imports
-import symonitoring_rpc.common    as cmn
-import symonitoring_rpc.constants as const
+import syrpc.common    as cmn
+import syrpc.constants as const
 
 
 class RPCBase(object):

@@ -8,7 +8,7 @@ import siphashc
 import sys
 
 # Project imports
-import symonitoring_rpc.constants as const
+import syrpc.constants as const
 
 _setup_done = False
 

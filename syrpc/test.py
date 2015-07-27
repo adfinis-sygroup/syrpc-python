@@ -13,10 +13,10 @@ except ImportError:  # pragma: no cover
     import unittest
 
 # Project imports
-import symonitoring_rpc.common    as cmn
-import symonitoring_rpc.constants as const
-import symonitoring_rpc.server    as server
-import symonitoring_rpc.client    as client
+import syrpc.common    as cmn
+import syrpc.constants as const
+import syrpc.server    as server
+import syrpc.client    as client
 
 
 class TestBase(unittest.TestCase):

@@ -9,8 +9,8 @@ import socket
 import uuid
 
 # Project imports
-import symonitoring_rpc.rpc_base as base
-import symonitoring_rpc.common   as cmn
+import syrpc.rpc_base as base
+import syrpc.common   as cmn
 
 
 class Client(base.RPCBase):
