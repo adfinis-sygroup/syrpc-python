@@ -18,16 +18,18 @@ class RPCBase(object):
 
         :type  settings: dict
         :param settings: Dictionary holding settings:
-                            * app_name        (mandatory)
-                            * amq_host        (mandatory)
-                            * amq_virtualhost (optional)
-                            * amq_user        (optional)
-                            * amq_password    (optional)
-                            * amq_transport   (optional)
-                            * amq_ttl         (optional)
-                            * amq_msg_ttl     (optional)
-                            * amq_num_queues  (optional)
-                            * msg_encoding    (optional)
+           * app_name        (mandatory) Every server this the same app name
+           *                             must support the same request-types
+           * amq_host        (mandatory)
+           * amq_virtualhost (optional)
+           * amq_user        (optional)
+           * amq_password    (optional)
+           * amq_transport   (optional) Used for unittesting (ie memory
+                                        transport)
+           * amq_ttl         (optional) Time to live for queues
+           * amq_msg_ttl     (optional) Time to live for messages
+           * amq_num_queues  (optional) Number of queue (default 64)
+           * msg_encoding    (optional) Default utf-8
         """
         self.app_name            = settings['app_name']
         if 'amq_virtualhost' in settings:  # pragma: no cover
@@ -51,11 +53,11 @@ class RPCBase(object):
         if 'amq_user' in settings:  # pragma: no cover
             self.amq_user = settings['amq_user']
         else:  # pragma: no cover
-            self.amq_user = None
+            self.amq_user = "guest"
         if 'amq_password' in settings:  # pragma: no cover
             self.amq_password = settings['amq_password']
         else:  # pragma: no cover
-            self.amq_password = None
+            self.amq_password = "guest"
         if 'amq_transport' in settings:  # pragma: no cover
             self.amq_transport = settings['amq_transport']
         else:  # pragma: no cover
