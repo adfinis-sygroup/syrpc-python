@@ -3,4 +3,5 @@
 .coverage
 venv
 /syrpc.egg-info
-/doc/build
+/docs/build
+/dist
