@@ -45,11 +45,9 @@ setup(
     ),
     entry_points = {
         'console_scripts': [
-            'syrpc-test-client        = syrpc.runner:client',
-            'syrpc-test-client-runner = syrpc.runner:client_runner',
-            'syrpc-test-clients       = syrpc.runner:two_clients',
-            'syrpc-test-server        = syrpc.runner:server',
-            'syrpc-test-server-runner = syrpc.runner:server_runner',
+            'syrpc-test-client        = syrpc.runner:run_client',
+            'syrpc-test-server        = syrpc.runner:run_server',
+            'syrpc-test-server-forever = syrpc.runner:run_server_forever',
         ]
     },
     install_requires = [
