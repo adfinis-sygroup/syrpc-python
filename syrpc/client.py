@@ -72,9 +72,9 @@ class Client(base.RPCBase):
         is expired get_result raises a EmptyException.
 
         :type  result_id: string
-        :param result_id: get the result for this result id
+        :param result_id: Get the result for this result_id
         :type  timeout: float
-        :param timeout: Timeout after which get_result will raise
+        :param timeout: timeout after which get_result will raise
                         EmptyException()
         """
         routing_key   = str(result_id)

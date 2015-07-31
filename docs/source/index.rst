@@ -35,8 +35,8 @@ SyRPC supports stateless backends using result_id.
 
 Collisions on the queues (too many rejects) are reduced by using a hash-table
 of queues, by default 64 queues. The hash module 64 of the result_id is used to
-identify the result_queue. This makes SyRPC 12 compatible with 12 Factor
-Applications but has still quite good performance.
+identify the result_queue. This makes SyRPC compatible with 12 Factor
+Applications, but has still quite good performance.
 
 Example Echo Server
 -------------------

@@ -79,7 +79,9 @@ class Server(base.RPCBase):
         """Puts a result to the AMQ result queue.
 
         :type  result_id: str
-        :param result_id: the result id received with get_request"""
+        :param result_id: The result id received with get_request
+        :type  data: dict
+        :param data: Result to send to the client"""
         str_result_id = str(result_id)
         hash_id      = cmn.get_hash(str_result_id, self.amq_num_queues)
         result_queue = self.get_result_queue(index=hash_id)
