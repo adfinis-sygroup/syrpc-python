@@ -14,9 +14,27 @@ import syrpc.common   as cmn
 
 
 class Client(base.RPCBase):
-    """Class for communicating with RabbitMQ over the AMQP."""
+    """Initiates a connection to AMQ. The RPC objects are not thread-safe,
+    please use a instance per Thread.
+
+    :type  settings: dict
+    :param settings: Dictionary holding settings:
+
+    - app_name        (mandatory) Every server this the same app name
+                                  must support the same request-types
+    - amq_host        (mandatory)
+    - amq_virtualhost (optional)
+    - amq_user        (optional)
+    - amq_password    (optional)
+    - amq_transport   (optional) Used for unittesting (ie memory
+                                 transport)
+    - amq_ttl         (optional) Time to live for queues
+    - amq_msg_ttl     (optional) Time to live for messages
+    - amq_num_queues  (optional) Number of queue (default 64)
+    """
 
     def __init__(self, settings):
+        """Constructor"""
         super(Client, self).__init__(settings)
         self.consumer = kombu.Consumer(
             channel=self.result_channel,
