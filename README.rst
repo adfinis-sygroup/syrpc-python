@@ -11,6 +11,14 @@ Readthedocs_
 
 .. _Readthedocs: http://syrpc.readthedocs.org/en/latest/
 
-Dependencies:
+Install
+-------
+
+::
+
+   pip install syrpc
+
+Dependencies
+------------
    - kombu
    - siphashc3
