@@ -2,7 +2,7 @@
 # pylint: disable=missing-docstring
 
 """
-Testing SyMonitoring RPC
+Testing SyRPC
 """
 
 # System imports
@@ -13,10 +13,10 @@ except ImportError:  # pragma: no cover
     import unittest
 
 # Project imports
-import syrpc.common    as cmn
 import syrpc.constants as const
 import syrpc.server    as server
 import syrpc.client    as client
+import syrpc
 
 
 class TestBase(unittest.TestCase):
@@ -62,8 +62,8 @@ class ClientTest(TestBase):
         self.assertEqual(result, expected_result)
 
     def test_get_result_timeout(self):
-        result = self.client.get_result('foo-bar-baz', 1)
-        self.assertIsNone(result)
+        with self.assertRaises(syrpc.EmptyException):
+            self.client.get_result('foo-bar-baz', 1)
 
     def test_wrong_result_id(self):
         self.put_request()
@@ -94,18 +94,3 @@ class ServerTest(TestBase):
         queue1 = self.server.get_result_queue(1)
         queue2 = self.server.get_result_queue(1)
         self.assertEqual(queue1, queue2)
-
-
-class CommonTest(unittest.TestCase):
-    """Testing common methods"""
-
-    def test_get_body_encoding(self):
-        body = 'foo-bar'
-        encoding = 'baz'
-        body_with_encoding = '{0}\0{1}'.format(encoding, body)
-        (body_, encoding_) = cmn.get_body_encoding(body_with_encoding)
-        self.assertEqual(body_, body)
-        self.assertEqual(encoding_, encoding)
-        (body_, encoding_) = cmn.get_body_encoding(body)
-        self.assertEqual(body_, body)
-        self.assertEqual(encoding_, 'utf-8')

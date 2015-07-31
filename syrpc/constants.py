@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 """
-Constants for SyMonitoring RPC
+Constants for SyRPC
 """
 
 # System imports
@@ -11,7 +11,6 @@ Constants for SyMonitoring RPC
 
 class General(object):
     """General constants"""
-    ENCODING    = 'utf-8'
     APP_NAME    = 'syrpc'
     NUM_WORKERS = 2
 

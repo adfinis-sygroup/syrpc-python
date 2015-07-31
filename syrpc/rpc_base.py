@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-"""RPC base class for SyMonitoring RPC middleware"""
+"""RPC base class for SyRPC middleware"""
 
 # System imports
 import kombu
@@ -14,7 +14,8 @@ class RPCBase(object):
     """Base class for communicating with RabbitMQ over AMQP."""
 
     def __init__(self, settings):
-        """Initiates a connection to AMQ.
+        """Initiates a connection to AMQ. The RPC objects are not thread-safe,
+        please use a instance per Thread.
 
         :type  settings: dict
         :param settings: Dictionary holding settings:
@@ -29,7 +30,6 @@ class RPCBase(object):
            * amq_ttl         (optional) Time to live for queues
            * amq_msg_ttl     (optional) Time to live for messages
            * amq_num_queues  (optional) Number of queue (default 64)
-           * msg_encoding    (optional) Default utf-8
         """
         self.app_name            = settings['app_name']
         if 'amq_virtualhost' in settings:  # pragma: no cover
@@ -62,10 +62,6 @@ class RPCBase(object):
             self.amq_transport = settings['amq_transport']
         else:  # pragma: no cover
             self.amq_transport = None
-        if 'msg_encoding' in settings:  # pragma: no cover
-            self.msg_encoding = settings['msg_encoding']
-        else:  # pragma: no cover
-            self.msg_encoding = const.General.ENCODING
         self.amq_host            = settings['amq_host']
         self.amq_connection      = None
         self.response            = None
@@ -103,7 +99,7 @@ class RPCBase(object):
         and queue name."""
         self.request_queue = self.amq_connection.SimpleQueue(
             name=const.RPC.REQUEST_NAME.format(self.app_name),
-            queue_opts=dict(auto_delete=True),
+            queue_opts=dict(auto_delete=False),
             exchange_opts=dict(auto_delete=False),
         )
 

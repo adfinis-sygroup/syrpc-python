@@ -5,42 +5,26 @@
 # System imports
 import logging
 import siphashc
-import sys
 
 # Project imports
 import syrpc.constants as const
 
-_setup_done = False
+
+class EmptyException(Exception):
+    """Timeout was reached before the server sent an answer"""
+    pass
 
 
-def _setup_logger(level, stdout=False, stderr=False):  # pragma: no cover
+class QueueNotFoundException(Exception):
+    """The requested queue does not exist"""
+    pass
+
+
+def _setup_logger():  # pragma: no cover
     """Sets up a default logger"""
-    global _setup_done  # pylint: disable=global-statement
-    if _setup_done:
-        return
     _root = logging.getLogger()
     _lg = _root.getChild(const.General.APP_NAME)
-    if stdout:
-        _stdout_handler = logging.StreamHandler(sys.stdout)
-        _root.addHandler(_stdout_handler)
-    if stderr:
-        _stderr_handler = logging.StreamHandler(sys.stderr)
-        _root.addHandler(_stderr_handler)
-    _root.setLevel(level)
-    _setup_done = True
     return _lg
-
-
-def get_body_encoding(body, default_encoding='utf-8'):
-    """Tries to get encoding of 'body', splitted by \0"""
-    body = body.split('\0', 1)
-    if len(body) <= 1:
-        encoding = default_encoding
-        body = body[0]
-    else:
-        encoding = body[0]
-        body = body[1]
-    return (body, encoding)
 
 
 def get_hash(string, queue_count=const.AMQ.NUM_QUEUES):
@@ -60,4 +44,4 @@ def consts_to_dict(object_):  # pragma: no cover
     return new
 
 
-lg = _setup_logger(logging.WARN)
+lg = _setup_logger()

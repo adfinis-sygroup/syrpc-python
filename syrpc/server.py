@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-"""RPC server implementation for SyMonitoring RPC middleware"""
+"""RPC server implementation for SyRPC middleware"""
 
 # System imports
 import amqp.exceptions           as aexcept
@@ -9,16 +9,8 @@ import kombu
 # Project imports
 import syrpc.rpc_base as base
 import syrpc.common   as cmn
-
-
-class EmptyException(Exception):
-    """Timeout was reached before the server sent an answer"""
-    pass
-
-
-class QueueNotFoundException(Exception):
-    """The requested queue does not exist"""
-    pass
+from syrpc.common     import EmptyException
+from syrpc.common     import QueueNotFoundException
 
 
 class Server(base.RPCBase):
@@ -33,9 +25,19 @@ class Server(base.RPCBase):
         )
 
     def get_request(self, timeout=None):
-        """Gets a request and processes it
+        """Wait for a request. Blocks until a request arrives or
+        timeout has expired. If no request has arrived when timeout
+        is expired get_request raises a EmptyException.
 
-        Blocks until a request arrives or timeout was hit.
+        :type  timeout: float
+        :param timeout: Timeout after which get_request will raise
+                        EmptyException()
+        :return: (type_, result_id, data) type_: type of the request,
+                 result_id: result_id to put the result with, data:
+                 request data
+
+        Type of the request represents the service/method/function that
+        should be called.
         """
         cmn.lg.debug("Server waiting for requests during %ss" % timeout)
         try:
@@ -44,23 +46,27 @@ class Server(base.RPCBase):
             raise EmptyException()
         except aexcept.NotFound as e:
             cmn.lg.critical("Server did not find queue: %s" % e)
-            raise QueueNotFoundException("Server did not find queue: %s" % e)
+            raise QueueNotFoundException(
+                "Server did not find queue: %s" % e
+            )
         cmn.lg.debug("Server received a request")
         message.ack()
         message   = message.decode()
         result_id = message['result_id']
         data      = message['data']
-        type_     = message['type_']
+        type_     = message['type']
         return (type_, result_id, data)
 
     def put_result(self, result_id, data):
-        """Puts a result of a request to result database and sends it to
-        AMQ."""
-        routing_key  = str(result_id)
-        hash_id      = cmn.get_hash(routing_key, self.amq_num_queues)
+        """Puts a result to the AMQ result queue.
+
+        :type  result_id: str
+        :param result_id: the result id received with get_request"""
+        str_result_id = str(result_id)
+        hash_id      = cmn.get_hash(str_result_id, self.amq_num_queues)
         result_queue = self.get_result_queue(index=hash_id)
         body         = {
-            'result_id': routing_key,
+            'result_id': str_result_id,
             'data':      data,
         }
         self.producer.publish(
@@ -71,7 +77,7 @@ class Server(base.RPCBase):
         )
         cmn.lg.debug(
             "Server published result %s within %s" % (
-                routing_key,
+                str_result_id,
                 result_queue,
             )
         )

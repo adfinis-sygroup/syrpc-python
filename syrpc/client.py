@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-"""RPC client implementation for SyMonitoring RPC middleware"""
+"""RPC client implementation for SyRPC middleware"""
 
 # System imports
 import json
@@ -25,11 +25,18 @@ class Client(base.RPCBase):
         )
 
     def put_request(self, type_, data):
-        """Sends request with given type and data to AMQ."""
+        """Puts request with given type and data to AMQ request queue.
+
+        :type  type_: string
+        :param type_: Type of the request represents the service/method/function
+                      that should be called.
+        :type   data: dict
+        :param  data: Data to send to the server.
+        """
         result_id = uuid.uuid4()
         body = {
             'result_id': str(result_id),
-            'type_':     type_.strip(),
+            'type':      type_.strip(),
             'data':      data
         }
         self.request_queue.put(
@@ -42,12 +49,19 @@ class Client(base.RPCBase):
         return result_id
 
     def get_result(self, result_id, timeout=None):
-        """Tries to get a result, blocks until a request arrives or timeout was
-        hit.
+        """Wait for a result. Blocks unit a result arrives or the
+        timeout has expired. If no result has arrived when timeout
+        is expired get_result raises a EmptyException.
+
+        :type  result_id: string
+        :param result_id: get the result for this result id
+        :type  timeout: float
+        :param timeout: Timeout after which get_result will raise
+                        EmptyException()
         """
         routing_key   = str(result_id)
         hash_id       = cmn.get_hash(routing_key, self.amq_num_queues)
-        result_queue = self.get_result_queue(index=hash_id)
+        result_queue  = self.get_result_queue(index=hash_id)
         self.wait_id  = routing_key
         self.consumer.add_queue(result_queue)
         cmn.lg.debug("Queue %s in queues: %s" % (
@@ -65,7 +79,7 @@ class Client(base.RPCBase):
                 self.amq_connection.drain_events(timeout=timeout)
             except socket.timeout:
                 cmn.lg.error("Client hit the fan after %ss" % timeout)
-                return None
+                raise cmn.EmptyException()
 
         cmn.lg.debug("Client got %s from AMQ" % result_id)
         cmn.lg.debug("Client returning %s" % self.response)
