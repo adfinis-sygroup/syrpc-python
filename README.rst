@@ -22,3 +22,8 @@ Dependencies
 ------------
    - kombu
    - siphashc3
+
+Author
+------
+
+Sven Osterwalder <sven.osterwalder@adfinis-sygroup.ch>
