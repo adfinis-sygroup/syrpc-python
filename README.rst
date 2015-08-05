@@ -2,7 +2,7 @@
 syrpc-python
 ============
 
-.. image:: https://travis-ci.org/adfinis-sygroup/syrpc-python.svg?branch=master)
+.. image:: https://travis-ci.org/adfinis-sygroup/syrpc-python.svg?branch=master
    :target: https://travis-ci.org/adfinis-sygroup/syrpc-python
 
 SyRPC - RPC for stateless backends
