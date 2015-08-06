@@ -50,14 +50,9 @@ def setup_logger(level, stderr=False, instance_name=''):
     handler.setFormatter(formatter)
     root.addHandler(handler)
 
-    lg.DEBUG = logging.DEBUG  # 10
-    lg.INFO  = logging.INFO   # 20
-    lg.WARN  = logging.WARN   # 30
-    lg.ERROR = logging.ERROR  # 40
     if stderr:  # pragma: no cover
-        errformater = logging.Formatter()
         errhandler  = logging.StreamHandler(sys.stderr)
-        errhandler.setFormatter(errformater)
+        errhandler.setFormatter(formatter)
         root.addHandler(errhandler)
     root.setLevel(level)
     _setup_done = True
