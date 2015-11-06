@@ -13,7 +13,7 @@ class General(object):
     """General constants"""
     APP_NAME    = 'syrpc'
     NUM_WORKERS = 2
-    TIMEOUT     = None # in seconds
+    TIMEOUT     = None  # in seconds
 
 
 class AMQ(object):
