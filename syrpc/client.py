@@ -77,6 +77,8 @@ class Client(base.RPCBase):
         :param timeout: timeout after which get_result will raise
                         EmptyException()
         """
+        if timeout is None:
+            timeout = self.timeout
         routing_key   = str(result_id)
         hash_id       = cmn.get_hash(routing_key, self.amq_num_queues)
         result_queue  = self.get_result_queue(index=hash_id)

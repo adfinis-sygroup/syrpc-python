@@ -28,6 +28,7 @@ class RPCBase(object):
     - amq_ttl         (optional) Time to live for queues
     - amq_msg_ttl     (optional) Time to live for messages
     - amq_num_queues  (optional) Number of queue (default 64)
+    - timeout         (optional) Timeout when waiting for response
     """
 
     def __init__(self, settings):
@@ -63,6 +64,10 @@ class RPCBase(object):
             self.amq_transport = settings['amq_transport']
         else:  # pragma: no cover
             self.amq_transport = None
+        if 'timeout' in settings: # pragma: no cover
+            self.timeout = settings['timeout']
+        else: # pragma: no cover
+            self.timeout = const.General.TIMEOUT
         self.amq_host            = settings['amq_host']
         self.amq_connection      = None
         self.response            = None
