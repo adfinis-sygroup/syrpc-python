@@ -64,9 +64,9 @@ class RPCBase(object):
             self.amq_transport = settings['amq_transport']
         else:  # pragma: no cover
             self.amq_transport = None
-        if 'timeout' in settings: # pragma: no cover
+        if 'timeout' in settings:  # pragma: no cover
             self.timeout = settings['timeout']
-        else: # pragma: no cover
+        else:  # pragma: no cover
             self.timeout = const.General.TIMEOUT
         self.amq_host            = settings['amq_host']
         self.amq_connection      = None
