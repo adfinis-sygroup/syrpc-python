@@ -21,7 +21,7 @@ pylint-all:
 
 venv:
 	if [ -z "`which virtualenv`" ]; then \
-		pip install virtualenv; \
+		sudo pip install virtualenv; \
 	fi
 	virtualenv venv
 	$(ACT) pip install --upgrade -r test-requirements.txt
