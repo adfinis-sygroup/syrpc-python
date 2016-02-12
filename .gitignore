@@ -5,3 +5,4 @@ venv
 /syrpc.egg-info
 /docs/build
 /dist
+/.cache
