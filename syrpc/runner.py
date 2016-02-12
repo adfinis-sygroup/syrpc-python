@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-# pylint: disable=super-init-not-called
 
 """Test module with example implementations"""
 

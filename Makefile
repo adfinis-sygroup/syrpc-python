@@ -1,23 +1,18 @@
+PROJECT := syrpc
 SHELL := /usr/bin/env bash
 
 ACT := source venv/bin/activate &&
 
-nosetest: venv
-	$(ACT) nosetests --cover-package=syrpc --with-coverage --cover-tests --cover-erase --cover-min-percentage=100
+pytest: venv
+	$(ACT) py.test --timeout=300 --doctest-modules --cov-report term-missing --cov=$(PROJECT) --cov-fail-under=100 --no-cov-on-fail $(PROJECT)
 
-test: nosetest pep8 pylint
+test: pytest flake8
 
 clean:
 	git clean -f
 
-pep8:
-	$(ACT) pep8 --ignore=E203,E272,E221,W291,E251,E203,E501,E402,E241 syrpc
-
-pylint:
-	$(ACT) pylint --disable=fixme,cyclic-import,import-error -r n syrpc --msg-template "{path} {C}:{line:3d},{column:2d}: {msg} ({symbol})"
-
-pylint-all:
-	$(ACT) pylint -r n syrpc --msg-template "{path} {C}:{line:3d},{column:2d}: {msg} ({symbol})"
+flake8:
+	$(ACT) flake8 --doctests -j auto --ignore=E221,E222,E251,E272,E241,E203 $(PROJECT)
 
 venv:
 	if [ -z "`which virtualenv`" ]; then \

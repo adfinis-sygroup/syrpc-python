@@ -31,7 +31,7 @@ def get_hash(string, queue_count=const.AMQ.NUM_QUEUES):
     """Generates a hash for given string"""
     # Only use the last 31 bits of the 64-bit hash because of serious
     # PHP-retardedness
-    hash32 = siphashc.siphash(const.AMQ.HASH, string) & 0x7FFFFFFF  # pylint: disable=no-member
+    hash32 = siphashc.siphash(const.AMQ.HASH, string) & 0x7FFFFFFF
     return hash32 % queue_count
 
 

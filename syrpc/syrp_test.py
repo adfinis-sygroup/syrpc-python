@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-# pylint: disable=missing-docstring
 
 """
 Testing SyRPC

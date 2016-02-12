@@ -18,8 +18,8 @@ _setup_done = False
 
 def setup_logger(level, stderr=False, instance_name=''):
     """Install default logger"""
-    global _setup_done  # pylint: disable=global-statement
-    if len(multiprocessing.active_children()):  # pylint: disable=no-member
+    global _setup_done
+    if len(multiprocessing.active_children()):
         return
     if _setup_done:
         return
